@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="location" class="com.example.WeatherForecast.myLocation" scope="prototype"
+    init-method="init">
+        <property name="city" value="" />
+        <property name="state" value="" />
+        <property name="country" value="" />
+    </bean>
+
+    <bean id="user" class="com.example.WeatherForecast.myUser" init-method="init" destroy-method="destroy">
+        <property name="location" ref="location"/>
+        <property name="weatherForecast" ref="forecast" />
+   </bean>
+
+    <bean id="forecast" class="com.example.WeatherForecast.myForecast" />
+
+</beans>
