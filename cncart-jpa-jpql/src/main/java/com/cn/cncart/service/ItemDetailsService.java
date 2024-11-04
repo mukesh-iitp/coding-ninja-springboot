@@ -30,4 +30,14 @@ public class ItemDetailsService {
 		return itemDetailsRepository.findByPriceGreaterThan(price);
 	}
 
+	
+	public List<ItemDetails> getItemDetailsForCategory(String category) {
+		return itemDetailsRepository.findByCatagoryOrderByPrice(category);
+	}
+
+
+	public Integer getItemDetailsCountForCategory(String category) {
+		return itemDetailsRepository.countByCatagory(category);
+	}
+
 }

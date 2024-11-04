@@ -19,6 +19,8 @@ public class ItemDetailsController {
 	@Autowired
 	ItemDetailsService itemDetailsService;
 	
+	
+	
 	@DeleteMapping("/delete/id/{id}")
 	public String delete(@PathVariable int id){
 		itemDetailsService.delete(id);
@@ -29,6 +31,16 @@ public class ItemDetailsController {
 	public List<ItemDetails> getItemDetailsForPrice(@PathVariable double price) {
 		return itemDetailsService.getItemDetailsForPrice(price);
 		
+	}
+	
+	@GetMapping("/item/category/{category}")
+	public List<ItemDetails> getItemDetailsForCategory(@PathVariable String category) {
+		return itemDetailsService.getItemDetailsForCategory(category);
+	}
+	
+	@GetMapping("/item/count/category/{category}")
+	public Integer getItemDetailsCountForCategory(@PathVariable String category) {
+		return itemDetailsService.getItemDetailsCountForCategory(category);
 	}
 
 }
