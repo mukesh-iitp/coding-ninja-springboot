@@ -19,7 +19,7 @@ public interface ItemDetailsRepository extends JpaRepository<ItemDetails, Intege
 	List<ItemDetails> findByCatagoryOrderByPrice(String category);
 
 	//JPQL
-	@Query("SELECT COUNT(itd.category) itd FROM ItemDetails itd WHERE itd.category=?1")
+	@Query("SELECT COUNT(itd.category) itd FROM ItemDetails itd WHERE itd.category=:category")
 	Integer countByCatagory(String category);
 
 }
