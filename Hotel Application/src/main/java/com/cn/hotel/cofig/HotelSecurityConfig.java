@@ -1,5 +1,6 @@
 package com.cn.hotel.cofig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +22,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HotelSecurityConfig {
 	
+	@Autowired
+	UserDetailsService userDetailsService;
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
+
 		http.csrf().disable()
 			.authorizeHttpRequests()
 			.requestMatchers("/user/register").permitAll()
@@ -33,48 +37,53 @@ public class HotelSecurityConfig {
 			.anyRequest()
 			.authenticated()
 			.and()
-			//.formLogin();	//for form login authentication
-			.httpBasic(); // for Basic authentication
-			
+			.rememberMe().userDetailsService(userDetailsService)
+			.and()
+			.formLogin()	//for form login authentication
+			//.httpBasic(); // for Basic authentication
+			.loginPage("/login").permitAll()
+			.and()
+			.logout().deleteCookies("remember-me");
+
 		return http.build();
-		
+
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
 		return builder.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	/*
-	
+
 	@Bean
 	public UserDetailsService users() {
-		
+
 		UserDetails user1 = User.builder()
 				.username("tony")
 				.password(passwordEncoder().encode("password"))
 				.roles("NORMAL")
 				.build();
-		
+
 		UserDetails user2 = User.builder()
 				.username("steve")
 				.password(passwordEncoder().encode("nopassword"))
 				.roles("ADMIN")
 				.build();
-		
+
 		return new InMemoryUserDetailsManager(user1, user2);
-		
+
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	*/
+	 */
 
 }
