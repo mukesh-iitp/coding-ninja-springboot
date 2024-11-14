@@ -2,12 +2,15 @@ package com.cn.hotel.cofig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -15,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HotelSecurityConfig {
 	
 	@Bean
@@ -22,13 +26,31 @@ public class HotelSecurityConfig {
 		
 		http.csrf().disable()
 			.authorizeHttpRequests()
+			.requestMatchers("/user/register").permitAll()
+			//.antMatchers("/hotel/create").hasRole("ADMIN")
+			//.requestMatchers("/hotel/create").hasRole("ADMIN")
+			//.requestMatchers("/hotel/**").hasRole("ADMIN") //for any api request
 			.anyRequest()
 			.authenticated()
 			.and()
-			.formLogin();
+			//.formLogin();	//for form login authentication
+			.httpBasic(); // for Basic authentication
+			
 		return http.build();
 		
 	}
+	
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
+		return builder.getAuthenticationManager();
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	/*
 	
 	@Bean
 	public UserDetailsService users() {
@@ -40,9 +62,9 @@ public class HotelSecurityConfig {
 				.build();
 		
 		UserDetails user2 = User.builder()
-				.username("steave")
+				.username("steve")
 				.password(passwordEncoder().encode("nopassword"))
-				.roles("NORMAL")
+				.roles("ADMIN")
 				.build();
 		
 		return new InMemoryUserDetailsManager(user1, user2);
@@ -53,5 +75,6 @@ public class HotelSecurityConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	*/
 
 }
