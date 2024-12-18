@@ -1,0 +1,53 @@
+server:
+    port: 8081
+spring:
+    application:
+        name: social_media
+    datasource:
+        password: password
+        url: jdbc:mysql://localhost:3306/socialmediadb
+        username: root
+    jpa:
+        generate-ddl: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+        show-sql: true
+    output:
+      ansi:
+         enabled: always #for color coded logs
+        
+        
+management:
+   endpoints:
+      web:
+         exposure:
+            include: '*'
+
+   endpoint:
+       health:
+          show-details: always
+   info:
+      env:
+         enabled: true
+         
+info:
+   app:
+      description: This application fetches all the connection of a user
+      name: Ninjas(Social Media Connection Application)
+      version: 1.0
+      
+logging:
+  level:
+    #root: TRACE
+    com: 
+      example:
+        socialMedia: TRACE
+
+  file:
+    name: logger.log #to enable logs written on a file
+    
+  pattern:
+    file: '%d{yyyy-MM-dd} [%level] %c{1.} [%t] %m%n'
