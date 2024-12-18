@@ -1,0 +1,9 @@
+# Complete the configuration with reference to the code given in the problem statement
+apiVersion: 1
+datasources:
+ - name: Prometheus
+   type: prometheus
+   access: proxy
+   url: http://prometheus:9090
+   isDefault: true
+ 
