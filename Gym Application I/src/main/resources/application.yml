@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/gym
+    username: #username
+    password: #password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate.ddl-auto: update
+server:
+  port: 8083
+
+logging:
+  level:
+    com: 
+      CN:
+        Gym: TRACE
